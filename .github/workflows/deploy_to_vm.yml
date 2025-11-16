@@ -34,6 +34,6 @@ jobs:
         # EOF
     - name: Test SSH Connection
       run: |
-        ssh -i private_key -o StrictHostKeyChecking=no \
+        ssh -i private_key.pem -o StrictHostKeyChecking=no \
         -o UserKnownHostsFile=/dev/null \
         ${{ secrets.DEPLOY_USERNAME }}@${{ secrets.DEPLOY_HOST }} "echo 'Connected'"
