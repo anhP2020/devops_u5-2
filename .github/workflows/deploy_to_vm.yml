@@ -32,8 +32,14 @@ jobs:
         #   nohub python3 madlibs.py >> app.log 2>&1 &
         #   disown
         # EOF
-    - name: Test SSH Connection
+    # - name: Test SSH Connection
+    #   run: |
+    #     ssh -i private_key.pem -o StrictHostKeyChecking=no \
+    #     -o UserKnownHostsFile=/dev/null \
+    #     ${{ secrets.DEPLOY_USERNAME }}@${{ secrets.DEPLOY_HOST }} "echo 'Connected'"
+    - name: Debug SSH Connection
       run: |
-        ssh -i private_key.pem -o StrictHostKeyChecking=no \
-        -o UserKnownHostsFile=/dev/null \
-        ${{ secrets.DEPLOY_USERNAME }}@${{ secrets.DEPLOY_HOST }} "echo 'Connected'"
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
+        chmod 600 private_key.pem
+        ssh -vvv -i private_key.pem -o StrictHostKeyChecking=no \
+        ${{ secrets.DEPLOY_USERNAME }}@${{ secrets.DEPLOY_HOST }} "echo 'test'" 2>&1 || true
